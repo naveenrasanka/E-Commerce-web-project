@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Discover the best local restaurants and get food delivered fast. Fresh, flavorful meals right to your door." />
+  <title>UrbanEats - Fresh Meals Delivered</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/menu.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+</head>
+<body>
+      <header class="navbar" role="banner">
+    <nav class="navbar__inner" aria-label="Main navigation">
+      <!-- Brand -->
+      <a href="/" class="navbar__brand" aria-label="UrbanEats home">
+        <span class="navbar__brand-icon">
+          <!-- Utensils icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M16 2v17.714A2.286 2.286 0 0113.714 22h0A2.286 2.286 0 0111.43 19.714V2" />
+            <path d="M11.43 2v5.143a2.857 2.857 0 005.714 0V2" />
+            <path d="M3 2v7a4 4 0 004 4h0" />
+            <path d="M7 2v7a4 4 0 004 4h0" />
+            <path d="M7 13v6.714A2.286 2.286 0 004.714 22h0A2.286 2.286 0 012.43 19.714V13" />
+          </svg>
+        </span>
+        <span class="navbar__brand-name">UrbanEats</span>
+      </a>
+
+      <!-- Desktop Links -->
+      <ul class="navbar__links" role="menubar">
+        <li role="none"><a href="/" role="menuitem">Home</a></li>
+        <li role="none"><a href="/menu.html" role="menuitem">Menu</a></li>
+        <li role="none"><a href="/categories" role="menuitem">Categories</a></li>
+        <li role="none"><a href="/about" role="menuitem">About Us</a></li>
+      </ul>
+
+      <!-- Desktop Actions -->
+      <div class="navbar__actions">
+        <a href="/cart" class="navbar__cart" aria-label="Shopping cart, 2 items">
+          <!-- Shopping bag icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="navbar__cart-badge">2</span>
+        </a>
+        <a href="/login" class="btn btn--outline">Log in</a>
+        <a href="/signup" class="btn btn--accent">Sign up</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button
+        class="navbar__hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        onclick="toggleMenu()"
+      >
+        <!-- Hamburger lines -->
+        <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="20" y2="18" />
+        </svg>
+        <!-- Close X (hidden by default) -->
+        <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display:none">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="navbar__mobile" role="navigation" aria-label="Mobile navigation">
+      <ul class="navbar__mobile-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/menu">Menu</a></li>
+        <li><a href="/categories">Categories</a></li>
+        <li><a href="/about">About Us</a></li>
+      </ul>
+      <div class="navbar__mobile-actions">
+        <a href="/cart" class="navbar__mobile-cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          Cart
+          <span class="navbar__mobile-cart-badge">2</span>
+        </a>
+        <a href="/login" class="btn btn--outline">Log in</a>
+        <a href="/signup" class="btn btn--accent">Sign up</a>
+      </div>
+    </div>
+  </header>
+
+</body>
+</html>
