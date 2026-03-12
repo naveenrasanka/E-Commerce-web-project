@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/CSS/indexcss.css" />
-
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -18,9 +16,8 @@
   <header class="navbar" role="banner">
     <nav class="navbar__inner" aria-label="Main navigation">
       <!-- Brand -->
-      <a href="/" class="navbar__brand" aria-label="UrbanEats home">
+      <a href="index.html" class="navbar__brand" aria-label="UrbanEats home">
         <span class="navbar__brand-icon">
-          <!-- Utensils icon -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M16 2v17.714A2.286 2.286 0 0113.714 22h0A2.286 2.286 0 0111.43 19.714V2" />
             <path d="M11.43 2v5.143a2.857 2.857 0 005.714 0V2" />
@@ -36,23 +33,22 @@
       <ul class="navbar__links" role="menubar">
         <li role="none"><a href="index.html" role="menuitem">Home</a></li>
         <li role="none"><a href="menu.html" role="menuitem">Menu</a></li>
-        <li role="none"><a href="/categories" role="menuitem">Categories</a></li>
-        <li role="none"><a href="/about" role="menuitem">About Us</a></li>
+        <li role="none"><a href="categories.html" role="menuitem">Categories</a></li>
+        <li role="none"><a href="about.html" role="menuitem">About Us</a></li>
       </ul>
 
       <!-- Desktop Actions -->
       <div class="navbar__actions">
-        <a href="/cart" class="navbar__cart" aria-label="Shopping cart, 2 items">
-          <!-- Shopping bag icon -->
+        <a href="cart.html" class="navbar__cart" aria-label="Shopping cart">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <path d="M16 10a4 4 0 01-8 0" />
           </svg>
-          <span class="navbar__cart-badge">2</span>
+          <span class="navbar__cart-badge">0</span>
         </a>
-        <a href="/login" class="btn btn--outline">Log in</a>
-        <a href="/signup" class="btn btn--accent">Sign up</a>
+        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
       </div>
 
       <!-- Mobile Hamburger -->
@@ -63,13 +59,11 @@
         aria-controls="mobile-menu"
         onclick="toggleMenu()"
       >
-        <!-- Hamburger lines -->
         <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <line x1="4" y1="6" x2="20" y2="6" />
           <line x1="4" y1="12" x2="20" y2="12" />
           <line x1="4" y1="18" x2="20" y2="18" />
         </svg>
-        <!-- Close X (hidden by default) -->
         <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display:none">
           <line x1="18" y1="6" x2="6" y2="18" />
           <line x1="6" y1="6" x2="18" y2="18" />
@@ -80,23 +74,23 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="navbar__mobile" role="navigation" aria-label="Mobile navigation">
       <ul class="navbar__mobile-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/menu">Menu</a></li>
-        <li><a href="/categories">Categories</a></li>
-        <li><a href="/about">About Us</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="about.html">About Us</a></li>
       </ul>
       <div class="navbar__mobile-actions">
-        <a href="/cart" class="navbar__mobile-cart">
+        <a href="cart.html" class="navbar__mobile-cart">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <path d="M16 10a4 4 0 01-8 0" />
           </svg>
           Cart
-          <span class="navbar__mobile-cart-badge">2</span>
+          <span class="navbar__mobile-cart-badge">0</span>
         </a>
-        <a href="/login" class="btn btn--outline">Log in</a>
-        <a href="/signup" class="btn btn--accent">Sign up</a>
+        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
       </div>
     </div>
   </header>
@@ -111,14 +105,14 @@
         Quality ingredients, exceptional taste, right at your fingertips.
       </p>
       <div class="hero__buttons">
-        <a href="/menu" class="btn btn--accent btn--lg">
+        <a href="menu.html" class="btn btn--accent btn--lg">
           Explore Menu
           <svg class="btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <line x1="5" y1="12" x2="19" y2="12" />
             <polyline points="12 5 19 12 12 19" />
-          </svg> 
+          </svg>
         </a>
-        <a href="/about" class="btn btn--outline-hero btn--lg">Learn More</a>
+        <a href="about.html" class="btn btn--outline-hero btn--lg">Learn More</a>
       </div>
     </section>
 
@@ -127,7 +121,6 @@
       <div class="features__grid">
         <div class="feature">
           <div class="feature__icon">
-            <!-- Clock icon -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
@@ -141,7 +134,6 @@
 
         <div class="feature">
           <div class="feature__icon">
-            <!-- MapPin icon -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
               <circle cx="12" cy="10" r="3" />
@@ -155,9 +147,8 @@
 
         <div class="feature">
           <div class="feature__icon">
-            <!-- Flame icon -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z" />
+              <path d="M8.5 14.5A2.5 2.5 0 0111 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z" />
             </svg>
           </div>
           <div>
@@ -175,7 +166,7 @@
         Browse our curated selection of local restaurants and enjoy a meal that hits
         the spot &mdash; every single time.
       </p>
-      <a href="/menu" class="btn btn--accent btn--lg">
+      <a href="menu.html" class="btn btn--accent btn--lg">
         Order Now
         <svg class="btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <line x1="5" y1="12" x2="19" y2="12" />
@@ -189,9 +180,8 @@
   <footer class="footer" role="contentinfo">
     <div class="footer__inner">
       <div class="footer__top">
-        <!-- Brand Column -->
         <div class="footer__brand">
-          <a href="/" class="footer__brand-link" aria-label="UrbanEats home">
+          <a href="index.html" class="footer__brand-link" aria-label="UrbanEats home">
             <span class="footer__brand-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M16 2v17.714A2.286 2.286 0 0113.714 22h0A2.286 2.286 0 0111.43 19.714V2" />
@@ -220,15 +210,14 @@
           </div>
         </div>
 
-        <!-- Link Columns -->
         <div class="footer__columns">
           <div>
             <h3 class="footer__col-title">Navigation</h3>
             <ul class="footer__col-list">
-              <li><a href="/">Home</a></li>
-              <li><a href="/menu">Menu</a></li>
-              <li><a href="/categories">Categories</a></li>
-              <li><a href="/about">About Us</a></li>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="menu.html">Menu</a></li>
+              <li><a href="categories.html">Categories</a></li>
+              <li><a href="about.html">About Us</a></li>
             </ul>
           </div>
           <div>
@@ -252,7 +241,6 @@
         </div>
       </div>
 
-      <!-- Bottom Bar -->
       <div class="footer__bottom">
         <p class="footer__copy">&copy; 2026 UrbanEats. All rights reserved.</p>
         <div class="footer__legal">
@@ -264,21 +252,7 @@
     </div>
   </footer>
 
-  <!-- ============ MOBILE MENU JS ============ -->
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('mobile-menu');
-      const hamburger = document.getElementById('hamburger-icon');
-      const close = document.getElementById('close-icon');
-      const btn = document.querySelector('.navbar__hamburger');
-      const isOpen = menu.classList.toggle('is-open');
-
-      hamburger.style.display = isOpen ? 'none' : 'block';
-      close.style.display = isOpen ? 'block' : 'none';
-      btn.setAttribute('aria-expanded', isOpen);
-      btn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
+

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Your shopping cart on UrbanEats - review and checkout your food order." />
+  <title>Shopping Cart - UrbanEats</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/CSS/indexcss.css" />
+  <style>
+    /* ===== Cart Page Specific ===== */
+    .cart__header {
+      background: var(--primary);
+      padding: 3rem 1.5rem;
+      text-align: center;
+      color: var(--primary-fg);
+    }
+
+    .cart__header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .cart__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 2rem;
+    }
+
+    .cart__items {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .cart__item {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      align-items: center;
+    }
+
+    .cart__item-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 0.5rem;
+      background: linear-gradient(135deg, rgba(194, 65, 12, 0.2), rgba(194, 65, 12, 0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .cart__item-details {
+      flex: 1;
+    }
+
+    .cart__item-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--foreground);
+      margin-bottom: 0.25rem;
+    }
+
+    .cart__item-restaurant {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .cart__item-price {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .cart__item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .cart__item-qty-btn {
+      width: 2rem;
+      height: 2rem;
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .cart__item-qty-btn:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .cart__item-qty {
+      width: 2.5rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .cart__item-remove {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+
+    .cart__item-remove:hover {
+      background: #fef2f2;
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .cart__empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .cart__empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .cart__empty-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 0.5rem;
+    }
+
+    .cart__empty-text {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .cart__summary {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .cart__summary-title {
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--foreground);
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+
+    .cart__summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .cart__summary-row--total {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--foreground);
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+
+    .cart__summary-row--value {
+      color: var(--foreground);
+    }
+
+    .cart__summary-row--value.accent {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .cart__checkout-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .cart__checkout-btn:hover {
+      background: #b91c1c;
+    }
+
+    .cart__checkout-btn:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+    }
+
+    .cart__promo {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart__promo-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .cart__promo-input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-family: var(--font-sans);
+    }
+
+    .cart__promo-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .cart__container {
+        grid-template-columns: 1fr;
+      }
+
+      .cart__summary {
+        position: static;
+      }
+
+      .cart__item {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar" role="banner">
+    <nav class="navbar__inner" aria-label="Main navigation">
+      <a href="/" class="navbar__brand" aria-label="UrbanEats home">
+        <span class="navbar__brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M16 2v17.714A2.286 2.286 0 0113.714 22h0A2.286 2.286 0 0111.43 19.714V2" />
+            <path d="M11.43 2v5.143a2.857 2.857 0 005.714 0V2" />
+            <path d="M3 2v7a4 4 0 004 4h0" />
+            <path d="M7 2v7a4 4 0 004 4h0" />
+            <path d="M7 13v6.714A2.286 2.286 0 004.714 22h0A2.286 2.286 0 012.43 19.714V13" />
+          </svg>
+        </span>
+        <span class="navbar__brand-name">UrbanEats</span>
+      </a>
+
+      <ul class="navbar__links" role="menubar">
+        <li role="none"><a href="index.html" role="menuitem">Home</a></li>
+        <li role="none"><a href="menu.html" role="menuitem">Menu</a></li>
+        <li role="none"><a href="categories.html" role="menuitem">Categories</a></li>
+        <li role="none"><a href="about.html" role="menuitem">About Us</a></li>
+      </ul>
+
+      <div class="navbar__actions">
+        <a href="cart.html" class="navbar__cart" aria-label="Shopping cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="navbar__cart-badge">3</span>
+        </a>
+        <a href="login.html" class="btn btn--outline">Log in</a>
+        <a href="signup.html" class="btn btn--accent">Sign up</a>
+      </div>
+
+      <button class="navbar__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">
+        <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="20" y2="18" />
+        </svg>
+        <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display:none">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </nav>
+
+    <div id="mobile-menu" class="navbar__mobile" role="navigation" aria-label="Mobile navigation">
+      <ul class="navbar__mobile-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+      <div class="navbar__mobile-actions">
+        <a href="cart.html" class="navbar__mobile-cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          Cart
+          <span class="navbar__mobile-cart-badge">3</span>
+        </a>
+        <a href="login.html" class="btn btn--outline">Log in</a>
+        <a href="signup.html" class="btn btn--accent">Sign up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ CART HEADER ============ -->
+  <section class="cart__header">
+    <h1>Shopping Cart</h1>
+  </section>
+
+  <!-- ============ CART CONTENT ============ -->
+  <main class="cart__container">
+    <div class="cart__items">
+      <!-- Item 1 -->
+      <div class="cart__item">
+        <div class="cart__item-image">🍕</div>
+        <div class="cart__item-details">
+          <h3 class="cart__item-name">Margherita Pizza (Large)</h3>
+          <p class="cart__item-restaurant">Tony's Pizza</p>
+          <p class="cart__item-price">$14.99</p>
+          <div class="cart__item-quantity">
+            <button class="cart__item-qty-btn">−</button>
+            <input type="number" class="cart__item-qty" value="1" min="1" readonly />
+            <button class="cart__item-qty-btn">+</button>
+          </div>
+        </div>
+        <button class="cart__item-remove">Remove</button>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="cart__item">
+        <div class="cart__item-image">🍔</div>
+        <div class="cart__item-details">
+          <h3 class="cart__item-name">Classic Cheeseburger</h3>
+          <p class="cart__item-restaurant">Burger King</p>
+          <p class="cart__item-price">$8.99</p>
+          <div class="cart__item-quantity">
+            <button class="cart__item-qty-btn">−</button>
+            <input type="number" class="cart__item-qty" value="2" min="1" readonly />
+            <button class="cart__item-qty-btn">+</button>
+          </div>
+        </div>
+        <button class="cart__item-remove">Remove</button>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="cart__item">
+        <div class="cart__item-image">🥤</div>
+        <div class="cart__item-details">
+          <h3 class="cart__item-name">Cola (2L)</h3>
+          <p class="cart__item-restaurant">Burger King</p>
+          <p class="cart__item-price">$3.99</p>
+          <div class="cart__item-quantity">
+            <button class="cart__item-qty-btn">−</button>
+            <input type="number" class="cart__item-qty" value="1" min="1" readonly />
+            <button class="cart__item-qty-btn">+</button>
+          </div>
+        </div>
+        <button class="cart__item-remove">Remove</button>
+      </div>
+    </div>
+
+    <!-- ============ CART SUMMARY ============ -->
+    <aside class="cart__summary">
+      <h2 class="cart__summary-title">Order Summary</h2>
+
+      <div class="cart__promo">
+        <label class="cart__promo-label">Promo Code</label>
+        <input type="text" class="cart__promo-input" placeholder="Enter code" />
+      </div>
+
+      <div class="cart__summary-row">
+        <span>Subtotal</span>
+        <span class="cart__summary-row--value">$40.96</span>
+      </div>
+
+      <div class="cart__summary-row">
+        <span>Delivery Fee</span>
+        <span class="cart__summary-row--value">$2.99</span>
+      </div>
+
+      <div class="cart__summary-row">
+        <span>Tax</span>
+        <span class="cart__summary-row--value">$3.48</span>
+      </div>
+
+      <div class="cart__summary-row cart__summary-row--total">
+        <span>Total</span>
+        <span class="cart__summary-row--value accent">$47.43</span>
+      </div>
+
+      <button class="cart__checkout-btn">
+        Proceed to Checkout
+      </button>
+
+      <p style="font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 1rem;">
+        Estimated delivery: 25-35 minutes
+      </p>
+    </aside>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/" class="footer__brand-link" aria-label="UrbanEats home">
+            <span class="footer__brand-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M16 2v17.714A2.286 2.286 0 0113.714 22h0A2.286 2.286 0 0111.43 19.714V2" />
+                <path d="M11.43 2v5.143a2.857 2.857 0 005.714 0V2" />
+                <path d="M3 2v7a4 4 0 004 4h0" />
+                <path d="M7 2v7a4 4 0 004 4h0" />
+                <path d="M7 13v6.714A2.286 2.286 0 004.714 22h0A2.286 2.286 0 012.43 19.714V13" />
+              </svg>
+            </span>
+            <span class="footer__brand-name">UrbanEats</span>
+          </a>
+          <p class="footer__brand-desc">Bringing the best local restaurants right to your doorstep. Fresh, fast, and flavorful meals delivered with care.</p>
+          <div class="footer__social">
+            <a href="#" class="footer__social-link" aria-label="Facebook">
+              <svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+            </a>
+            <a href="#" class="footer__social-link" aria-label="Twitter">
+              <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" class="footer__social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer__columns">
+          <div>
+            <h3 class="footer__col-title">Navigation</h3>
+            <ul class="footer__col-list">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="menu.html">Menu</a></li>
+              <li><a href="categories.html">Categories</a></li>
+              <li><a href="about.html">About Us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="footer__col-title">Company</h3>
+            <ul class="footer__col-list">
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Press</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="footer__col-title">Support</h3>
+            <ul class="footer__col-list">
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Delivery Info</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2026 UrbanEats. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const hamburger = document.getElementById('hamburger-icon');
+      const close = document.getElementById('close-icon');
+      const btn = document.querySelector('.navbar__hamburger');
+      const isOpen = menu.classList.toggle('is-open');
+
+      hamburger.style.display = isOpen ? 'none' : 'block';
+      close.style.display = isOpen ? 'block' : 'none';
+      btn.setAttribute('aria-expanded', isOpen);
+      btn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    }
+  </script>
+</body>
+</html>

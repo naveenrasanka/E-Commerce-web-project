@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Log in or create your UrbanEats account." />
+  <title>Login / Sign Up - UrbanEats</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar" role="banner">
+    <nav class="navbar__inner" aria-label="Main navigation">
+      <a href="index.html" class="navbar__brand" aria-label="UrbanEats home">
+        <span class="navbar__brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M16 2v17.714A2.286 2.286 0 0113.714 22h0A2.286 2.286 0 0111.43 19.714V2" />
+            <path d="M11.43 2v5.143a2.857 2.857 0 005.714 0V2" />
+            <path d="M3 2v7a4 4 0 004 4h0" />
+            <path d="M7 2v7a4 4 0 004 4h0" />
+            <path d="M7 13v6.714A2.286 2.286 0 004.714 22h0A2.286 2.286 0 012.43 19.714V13" />
+          </svg>
+        </span>
+        <span class="navbar__brand-name">UrbanEats</span>
+      </a>
+
+      <ul class="navbar__links" role="menubar">
+        <li role="none"><a href="index.html" role="menuitem">Home</a></li>
+        <li role="none"><a href="menu.html" role="menuitem">Menu</a></li>
+        <li role="none"><a href="categories.html" role="menuitem">Categories</a></li>
+        <li role="none"><a href="about.html" role="menuitem">About Us</a></li>
+      </ul>
+
+      <div class="navbar__actions">
+        <a href="cart.html" class="navbar__cart" aria-label="Shopping cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="navbar__cart-badge">0</span>
+        </a>
+        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+      </div>
+
+      <button
+        class="navbar__hamburger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        onclick="toggleMenu()"
+      >
+        <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="20" y2="18" />
+        </svg>
+        <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display:none">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </nav>
+
+    <div id="mobile-menu" class="navbar__mobile" role="navigation" aria-label="Mobile navigation">
+      <ul class="navbar__mobile-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="categories.html">Categories</a></li>
+        <li><a href="about.html">About Us</a></li>
+      </ul>
+      <div class="navbar__mobile-actions">
+        <a href="cart.html" class="navbar__mobile-cart">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          Cart
+          <span class="navbar__mobile-cart-badge">0</span>
+        </a>
+        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-page" data-auth-page data-mode="login">
+    <section class="auth-panel" aria-labelledby="auth-title">
+      <div class="auth-panel__left">
+        <p class="auth-panel__tag">UrbanEats Account</p>
+        <h1 id="auth-title" class="auth-panel__title" data-auth-title>Welcome back</h1>
+        <p class="auth-panel__subtitle" data-auth-subtitle>
+          Log in to continue your orders and save favorites.
+        </p>
+
+        <div class="auth-toggle" role="tablist" aria-label="Login and Sign Up">
+          <button type="button" class="auth-toggle__btn is-active" data-auth-toggle="login" role="tab" aria-selected="true">Log in</button>
+          <button type="button" class="auth-toggle__btn" data-auth-toggle="signup" role="tab" aria-selected="false">Sign up</button>
+        </div>
+
+        <p class="auth-feedback" data-auth-feedback aria-live="polite"></p>
+
+        <form class="auth-form" data-auth-form="login">
+          <label class="auth-form__field">
+            <span>Email address</span>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+          <label class="auth-form__field">
+            <span>Password</span>
+            <input type="password" name="password" placeholder="Enter your password" required />
+          </label>
+          <button type="submit" class="btn btn--accent btn--lg auth-form__submit">Log in</button>
+        </form>
+
+        <form class="auth-form" data-auth-form="signup" hidden>
+          <label class="auth-form__field">
+            <span>Full name</span>
+            <input type="text" name="fullName" placeholder="Jane Doe" required />
+          </label>
+          <label class="auth-form__field">
+            <span>Email address</span>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+          <label class="auth-form__field">
+            <span>Password</span>
+            <input type="password" name="password" placeholder="Create a password" minlength="6" required />
+          </label>
+          <label class="auth-form__field">
+            <span>Confirm password</span>
+            <input type="password" name="confirmPassword" placeholder="Re-enter your password" minlength="6" required />
+          </label>
+          <button type="submit" class="btn btn--accent btn--lg auth-form__submit">Create account</button>
+        </form>
+      </div>
+
+      <aside class="auth-panel__right" aria-hidden="true">
+        <div class="auth-panel__card">
+          <p class="auth-panel__card-label">Perks</p>
+          <h2>Order faster, track every delivery, and unlock member-only offers.</h2>
+          <ul>
+            <li>Saved addresses and payment methods</li>
+            <li>Real-time delivery tracking updates</li>
+            <li>Exclusive discounts each week</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__brand-link" aria-label="UrbanEats home">
+            <span class="footer__brand-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M16 2v17.714A2.286 2.286 0 0113.714 22h0A2.286 2.286 0 0111.43 19.714V2" />
+                <path d="M11.43 2v5.143a2.857 2.857 0 005.714 0V2" />
+                <path d="M3 2v7a4 4 0 004 4h0" />
+                <path d="M7 2v7a4 4 0 004 4h0" />
+                <path d="M7 13v6.714A2.286 2.286 0 004.714 22h0A2.286 2.286 0 012.43 19.714V13" />
+              </svg>
+            </span>
+            <span class="footer__brand-name">UrbanEats</span>
+          </a>
+          <p class="footer__brand-desc">
+            Bringing the best local restaurants right to your doorstep. Fresh, fast, and
+            flavorful meals delivered with care.
+          </p>
+        </div>
+
+        <div class="footer__columns">
+          <div>
+            <h3 class="footer__col-title">Navigation</h3>
+            <ul class="footer__col-list">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="menu.html">Menu</a></li>
+              <li><a href="categories.html">Categories</a></li>
+              <li><a href="about.html">About Us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="footer__col-title">Company</h3>
+            <ul class="footer__col-list">
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Press</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="footer__col-title">Support</h3>
+            <ul class="footer__col-list">
+              <li><a href="#">Help Center</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Delivery Info</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2026 UrbanEats. All rights reserved.</p>
+        <div class="footer__legal">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
