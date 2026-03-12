@@ -44,8 +44,8 @@
           </svg>
           <span class="navbar__cart-badge">0</span>
         </a>
-        <a href="#" class="btn btn--outline">Log in</a>
-        <a href="#" class="btn btn--accent">Sign up</a>
+        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
       </div>
 
       <button
@@ -84,8 +84,8 @@
           Cart
           <span class="navbar__mobile-cart-badge">0</span>
         </a>
-        <a href="#" class="btn btn--outline">Log in</a>
-        <a href="#" class="btn btn--accent">Sign up</a>
+        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
       </div>
     </div>
   </header>
@@ -100,65 +100,26 @@
       <div style="display: flex; flex-direction: column; gap: 2rem;">
         <!-- Items Section -->
         <div style="flex: 1;">
-          <div class="cart-items">
-            <div class="cart-item">
-              <div class="cart-item__info">
-                <p class="cart-item__name">Classic Cheeseburger</p>
-                <p class="cart-item__price">$14.99</p>
-              </div>
-              <div class="cart-item__quantity">
-                <button>−</button>
-                <span>1</span>
-                <button>+</button>
-              </div>
-              <button class="cart-item__remove">Remove</button>
-            </div>
-
-            <div class="cart-item">
-              <div class="cart-item__info">
-                <p class="cart-item__name">Margherita Pizza</p>
-                <p class="cart-item__price">$16.99</p>
-              </div>
-              <div class="cart-item__quantity">
-                <button>−</button>
-                <span>2</span>
-                <button>+</button>
-              </div>
-              <button class="cart-item__remove">Remove</button>
-            </div>
-
-            <div class="cart-item">
-              <div class="cart-item__info">
-                <p class="cart-item__name">Spicy Chicken Pad Thai</p>
-                <p class="cart-item__price">$13.99</p>
-              </div>
-              <div class="cart-item__quantity">
-                <button>−</button>
-                <span>1</span>
-                <button>+</button>
-              </div>
-              <button class="cart-item__remove">Remove</button>
-            </div>
-          </div>
+          <div class="cart-items"></div>
         </div>
 
         <!-- Summary Section -->
         <div class="cart-summary">
           <div class="cart-summary__row">
             <span class="cart-summary__label">Subtotal</span>
-            <span data-subtotal>$61.97</span>
+            <span data-subtotal>$0.00</span>
           </div>
           <div class="cart-summary__row">
             <span class="cart-summary__label">Delivery Fee</span>
-            <span data-delivery>$2.99</span>
+            <span data-delivery>$0.00</span>
           </div>
           <div class="cart-summary__row">
             <span class="cart-summary__label">Tax</span>
-            <span>$4.97</span>
+            <span data-tax>$0.00</span>
           </div>
           <div class="cart-summary__row">
             <span class="cart-summary__label">Total</span>
-            <span data-total>$69.93</span>
+            <span data-total>$0.00</span>
           </div>
           <button class="btn btn--accent btn--lg cart-summary__button" style="width: 100%;">Proceed to Checkout</button>
         </div>
@@ -245,3 +206,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
