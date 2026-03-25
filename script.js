@@ -17,6 +17,13 @@ function toggleMenu() {
 const CART_STORAGE_KEY = 'urbaneats-cart';
 const DELIVERY_FEE = 2.99;
 const TAX_RATE = 0.08;
+const MENU_API_ENDPOINT = '/api/menu';
+const CURRENCY_FORMATTER = new Intl.NumberFormat('en-LK', {
+  style: 'currency',
+  currency: 'LKR',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
 
 function getCartItems() {
   try {
@@ -34,7 +41,101 @@ function saveCartItems(items) {
 }
 
 function formatCurrency(amount) {
-  return '$' + amount.toFixed(2);
+  return CURRENCY_FORMATTER.format(amount);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getBackendBaseUrl() {
+  const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const isFileProtocol = window.location.protocol === 'file:';
+  const isNonBackendLocalPort = isLocalHost && window.location.port && window.location.port !== '3001';
+  const apiHost = isLocalHost ? window.location.hostname : 'localhost';
+
+  if (isFileProtocol || isNonBackendLocalPort) {
+    return 'http://' + apiHost + ':3001';
+  }
+
+  return '';
+}
+
+function resolveMenuImageSrc(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+
+  if (/^(https?:)?\/\//i.test(raw) || raw.startsWith('data:') || raw.startsWith('blob:')) {
+    return raw;
+  }
+
+  if (raw.startsWith('/')) {
+    return getBackendBaseUrl() + raw;
+  }
+
+  return getBackendBaseUrl() + '/food-images/' + raw.replace(/^\/+/, '');
+}
+
+function renderMenuItems(menuItems) {
+  const menuGrid = document.querySelector('.menu-items__grid');
+  if (!menuGrid || !Array.isArray(menuItems)) return;
+
+  if (!menuItems.length) {
+    menuGrid.innerHTML = '<p style="color: rgba(15, 23, 42, 0.72);">No menu items available yet.</p>';
+    return;
+  }
+
+  menuGrid.innerHTML = menuItems.map(function(item) {
+    const category = normalizeCategoryName(item.category || 'other');
+    const name = escapeHtml(item.name || 'Untitled Item');
+    const description = escapeHtml(item.description || '');
+    const price = Number(item.priceLkr || item.price || 0);
+    const imageUrl = resolveMenuImageSrc(item.imageUrl);
+    const imageMarkup = imageUrl
+      ? '<img class="menu-item__img" src="' + escapeHtml(imageUrl) + '" alt="' + name + '" loading="lazy" />'
+      : '';
+
+    return (
+      '<div class="menu-item" data-category="' + category + '">' +
+        '<div class="menu-item__image">' + imageMarkup + '</div>' +
+        '<div class="menu-item__content">' +
+          '<h3 class="menu-item__title">' + name + '</h3>' +
+          '<p class="menu-item__desc">' + description + '</p>' +
+          '<div class="menu-item__footer">' +
+            '<span class="menu-item__price">' + formatCurrency(price) + '</span>' +
+            '<button class="btn btn--accent">Add to Cart</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join('');
+}
+
+async function initializeDynamicMenu() {
+  const menuGrid = document.querySelector('.menu-items__grid');
+  if (!menuGrid) return;
+
+  try {
+    const response = await fetch(getBackendBaseUrl() + MENU_API_ENDPOINT, {
+      credentials: 'include',
+      cache: 'no-store'
+    });
+    if (!response.ok) return;
+
+    const data = await response.json();
+    if (!Array.isArray(data.items)) return;
+
+    renderMenuItems(data.items);
+    initializeMenuButtons();
+    initializeMenuCategoryFilter();
+  } catch (error) {
+    // Keep existing static menu content if API is unavailable.
+  }
 }
 
 function getCartItemCount(items) {
@@ -171,7 +272,9 @@ function initializeMenuButtons() {
       if (!titleElement || !priceElement) return;
 
       const name = titleElement.textContent.trim();
-      const price = parseFloat(priceElement.textContent.replace('$', '').trim());
+      const priceText = priceElement.textContent.replace(/[^0-9.]/g, '').trim();
+      const price = parseFloat(priceText);
+      if (Number.isNaN(price)) return;
       const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
       addItemToCart({
@@ -193,6 +296,39 @@ function initializeMenuButtons() {
 function initializeAuthPage() {
   const authContainer = document.querySelector('[data-auth-page]');
   if (!authContainer) return;
+
+  function getAuthApiBase() {
+    const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isFileProtocol = window.location.protocol === 'file:';
+    const isNonBackendLocalPort = isLocalHost && window.location.port && window.location.port !== '3001';
+    const apiHost = isLocalHost ? window.location.hostname : 'localhost';
+
+    if (isFileProtocol || isNonBackendLocalPort) {
+      return 'http://' + apiHost + ':3001';
+    }
+
+    return '';
+  }
+
+  async function authFetchJson(url, options) {
+    const response = await fetch(getAuthApiBase() + url, {
+      credentials: 'include',
+      ...options
+    });
+
+    let body = {};
+    try {
+      body = await response.json();
+    } catch (error) {
+      body = {};
+    }
+
+    if (!response.ok) {
+      throw new Error(body.message || 'Request failed.');
+    }
+
+    return body;
+  }
 
   const modeButtons = document.querySelectorAll('[data-auth-toggle]');
   const loginForm = document.querySelector('[data-auth-form="login"]');
@@ -235,10 +371,34 @@ function initializeAuthPage() {
   });
 
   if (loginForm) {
-    loginForm.addEventListener('submit', function(event) {
+    loginForm.addEventListener('submit', async function(event) {
       event.preventDefault();
-      if (feedback) {
-        feedback.textContent = 'Demo mode: Login submitted successfully.';
+
+      const usernameInput = loginForm.querySelector('[name="email"]');
+      const passwordInput = loginForm.querySelector('[name="password"]');
+
+      const payload = {
+        username: String(usernameInput ? usernameInput.value : '').trim(),
+        password: String(passwordInput ? passwordInput.value : '')
+      };
+
+      if (!payload.username || !payload.password) {
+        if (feedback) feedback.textContent = 'Username and password are required.';
+        return;
+      }
+
+      try {
+        await authFetchJson('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        window.location.href = 'admin-dashboard.html';
+      } catch (error) {
+        if (feedback) {
+          feedback.textContent = error.message;
+        }
       }
     });
   }
@@ -271,6 +431,116 @@ function initializeAuthPage() {
   setAuthMode(queryMode === 'signup' ? 'signup' : 'login');
 }
 
+function initializeHomeAnimations() {
+  const heroSection = document.querySelector('.hero');
+  if (!heroSection) return;
+
+  document.body.classList.add('home-animate');
+  requestAnimationFrame(function() {
+    document.body.classList.add('is-loaded');
+  });
+
+  const revealItems = document.querySelectorAll('.feature, .cta');
+  if (!revealItems.length) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    revealItems.forEach(function(item) {
+      item.classList.add('is-visible');
+    });
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver(function(entries, observer) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.2,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealItems.forEach(function(item) {
+    revealObserver.observe(item);
+  });
+}
+
+function normalizeCategoryName(value) {
+  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-');
+}
+
+function toTitleCase(value) {
+  return value
+    .split('-')
+    .filter(Boolean)
+    .map(function(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+}
+
+function initializeCategoryRedirect() {
+  const categoryCards = document.querySelectorAll('.category-card');
+  if (!categoryCards.length) return;
+
+  categoryCards.forEach(function(card) {
+    const title = card.querySelector('.category-card__name');
+    if (!title) return;
+
+    const category = normalizeCategoryName(title.textContent || '');
+    if (!category) return;
+
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'link');
+    card.setAttribute('aria-label', 'Browse ' + title.textContent.trim() + ' menu');
+
+    function goToMenuCategory() {
+      window.location.href = 'menu.html?category=' + encodeURIComponent(category);
+    }
+
+    card.addEventListener('click', goToMenuCategory);
+    card.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        goToMenuCategory();
+      }
+    });
+  });
+}
+
+function initializeMenuCategoryFilter() {
+  const menuItems = document.querySelectorAll('.menu-item[data-category]');
+  if (!menuItems.length) return;
+
+  const selectedCategory = new URLSearchParams(window.location.search).get('category');
+  if (!selectedCategory) return;
+
+  const normalizedCategory = normalizeCategoryName(selectedCategory);
+  let visibleItemsCount = 0;
+
+  menuItems.forEach(function(item) {
+    const itemCategory = normalizeCategoryName(item.getAttribute('data-category') || '');
+    const isVisible = normalizedCategory === itemCategory;
+    item.style.display = isVisible ? '' : 'none';
+    if (isVisible) visibleItemsCount += 1;
+  });
+
+  const heroTitle = document.querySelector('.menu-hero__title');
+  const heroDescription = document.querySelector('.menu-hero .hero__desc');
+  const categoryLabel = toTitleCase(normalizedCategory);
+
+  if (heroTitle) {
+    heroTitle.textContent = visibleItemsCount > 0 ? categoryLabel + ' Menu' : categoryLabel + ' Menu';
+  }
+
+  if (heroDescription) {
+    heroDescription.textContent = visibleItemsCount > 0
+      ? 'Showing ' + categoryLabel + ' dishes available right now.'
+      : 'No items found for ' + categoryLabel + ' yet. Try another category.';
+  }
+}
+
 // Close mobile menu when a link is clicked
 document.addEventListener('DOMContentLoaded', function() {
   const mobileLinks = document.querySelectorAll('.navbar__mobile-links a, .navbar__mobile-actions a');
@@ -288,8 +558,12 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   updateCartBadges();
+  initializeDynamicMenu();
   initializeMenuButtons();
   initializeAuthPage();
+  initializeHomeAnimations();
+  initializeCategoryRedirect();
+  initializeMenuCategoryFilter();
   renderCartItems();
 
   const cartItemsContainer = document.querySelector('.cart-items');
@@ -303,7 +577,7 @@ function filterCategories(category) {
   const items = document.querySelectorAll('.menu-item');
   items.forEach(item => {
     if (category === 'all' || item.getAttribute('data-category') === category) {
-      item.style.display = 'block';
+      item.style.display = '';
     } else {
       item.style.display = 'none';
     }

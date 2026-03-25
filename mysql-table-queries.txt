@@ -1,0 +1,41 @@
+-- UrbanEats MySQL setup queries
+-- Run these in MySQL Workbench, phpMyAdmin SQL tab, or mysql CLI.
+
+CREATE DATABASE IF NOT EXISTS urbaneats;
+USE urbaneats;
+
+CREATE TABLE IF NOT EXISTS admins (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS menu_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  category VARCHAR(50) NOT NULL,
+  image_url TEXT NULL,
+  price_lkr DECIMAL(10, 2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Optional seed data
+INSERT INTO menu_items (name, description, category, price_lkr) VALUES
+('Classic Cheeseburger', 'Juicy beef patty, cheddar, lettuce, tomato, and special sauce.', 'burgers', 14.99),
+('Margherita Pizza', 'Mozzarella, basil, tomato sauce, and olive oil on hand-tossed dough.', 'pizza', 16.99),
+('Spicy Chicken Pad Thai', 'Stir-fried noodles with chicken, shrimp, eggs, and aromatic spices.', 'asian', 13.99),
+('Grilled Salmon', 'Fresh salmon fillet with lemon butter sauce and seasonal vegetables.', 'seafood', 24.99),
+('Tacos al Pastor', 'Marinated pork tacos with pineapple, onion, cilantro, and lime.', 'mexican', 12.99),
+('Vegetarian Buddha Bowl', 'Quinoa, roasted vegetables, chickpeas, avocado, and tahini.', 'bowls', 11.99);
+
+-- Helpful check queries
+SHOW TABLES;
+SELECT id, username, created_at FROM admins;
+SELECT id, name, category, price_lkr, created_at FROM menu_items ORDER BY id DESC;
+
+-- IMPORTANT: password_hash must be a bcrypt hash, not a plain password.
+-- Recommended way to create admin users:
+-- 1) Use API: POST /api/admin/register
+-- 2) Or generate a bcrypt hash first, then insert that hash into password_hash.

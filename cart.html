@@ -44,8 +44,13 @@
           </svg>
           <span class="navbar__cart-badge">0</span>
         </a>
-        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
-        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+        <div class="navbar__auth-block">
+          <div class="navbar__auth-buttons">
+            <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+            <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+          </div>
+          <a href="admin-login.html" class="navbar__admin-link">Admin Login</a>
+        </div>
       </div>
 
       <button
@@ -86,6 +91,7 @@
         </a>
         <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
         <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+        <a href="admin-login.html" class="navbar__mobile-admin-link">Admin Login</a>
       </div>
     </div>
   </header>
@@ -107,19 +113,19 @@
         <div class="cart-summary">
           <div class="cart-summary__row">
             <span class="cart-summary__label">Subtotal</span>
-            <span data-subtotal>$0.00</span>
+            <span data-subtotal>LKR 0.00</span>
           </div>
           <div class="cart-summary__row">
             <span class="cart-summary__label">Delivery Fee</span>
-            <span data-delivery>$0.00</span>
+            <span data-delivery>LKR 0.00</span>
           </div>
           <div class="cart-summary__row">
             <span class="cart-summary__label">Tax</span>
-            <span data-tax>$0.00</span>
+            <span data-tax>LKR 0.00</span>
           </div>
           <div class="cart-summary__row">
             <span class="cart-summary__label">Total</span>
-            <span data-total>$0.00</span>
+            <span data-total>LKR 0.00</span>
           </div>
           <button class="btn btn--accent btn--lg cart-summary__button" style="width: 100%;">Proceed to Checkout</button>
         </div>

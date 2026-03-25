@@ -44,8 +44,13 @@
           </svg>
           <span class="navbar__cart-badge">0</span>
         </a>
-        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
-        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+        <div class="navbar__auth-block">
+          <div class="navbar__auth-buttons">
+            <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+            <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+          </div>
+          <a href="admin-login.html" class="navbar__admin-link">Admin Login</a>
+        </div>
       </div>
 
       <button
@@ -86,6 +91,7 @@
         </a>
         <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
         <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+        <a href="admin-login.html" class="navbar__mobile-admin-link">Admin Login</a>
       </div>
     </div>
   </header>
@@ -108,8 +114,8 @@
 
         <form class="auth-form" data-auth-form="login">
           <label class="auth-form__field">
-            <span>Email address</span>
-            <input type="email" name="email" placeholder="you@example.com" required />
+            <span>Username</span>
+            <input type="text" name="email" placeholder="Enter your username" required autocomplete="username" />
           </label>
           <label class="auth-form__field">
             <span>Password</span>

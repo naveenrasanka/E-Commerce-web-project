@@ -44,8 +44,13 @@
           </svg>
           <span class="navbar__cart-badge">0</span>
         </a>
-        <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
-        <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+        <div class="navbar__auth-block">
+          <div class="navbar__auth-buttons">
+            <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
+            <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+          </div>
+          <a href="admin-login.html" class="navbar__admin-link">Admin Login</a>
+        </div>
       </div>
 
       <button
@@ -86,6 +91,7 @@
         </a>
         <a href="auth.html?mode=login" class="btn btn--outline">Log in</a>
         <a href="auth.html?mode=signup" class="btn btn--accent">Sign up</a>
+        <a href="admin-login.html" class="navbar__mobile-admin-link">Admin Login</a>
       </div>
     </div>
   </header>
@@ -102,73 +108,73 @@
     <!-- ============ MENU ITEMS ============ -->
     <section class="menu-items">
       <div class="menu-items__grid">
-        <div class="menu-item">
+        <div class="menu-item" data-category="burgers">
           <div class="menu-item__image"></div>
           <div class="menu-item__content">
             <h3 class="menu-item__title">Classic Cheeseburger</h3>
             <p class="menu-item__desc">Juicy beef patty, melted cheddar, fresh lettuce, tomato, and special sauce. Perfect for burger lovers.</p>
             <div class="menu-item__footer">
-              <span class="menu-item__price">$14.99</span>
+              <span class="menu-item__price">LKR 14.99</span>
               <button class="btn btn--accent">Add to Cart</button>
             </div>
           </div>
         </div>
 
-        <div class="menu-item">
+        <div class="menu-item" data-category="pizza">
           <div class="menu-item__image"></div>
           <div class="menu-item__content">
             <h3 class="menu-item__title">Margherita Pizza</h3>
             <p class="menu-item__desc">Fresh mozzarella, basil, tomato sauce, and olive oil on hand-tossed dough. A true Italian classic.</p>
             <div class="menu-item__footer">
-              <span class="menu-item__price">$16.99</span>
+              <span class="menu-item__price">LKR 16.99</span>
               <button class="btn btn--accent">Add to Cart</button>
             </div>
           </div>
         </div>
 
-        <div class="menu-item">
+        <div class="menu-item" data-category="asian">
           <div class="menu-item__image"></div>
           <div class="menu-item__content">
             <h3 class="menu-item__title">Spicy Chicken Pad Thai</h3>
             <p class="menu-item__desc">Stir-fried rice noodles with chicken, shrimp, eggs, and a blend of aromatic spices. Served with peanuts.</p>
             <div class="menu-item__footer">
-              <span class="menu-item__price">$13.99</span>
+              <span class="menu-item__price">LKR 13.99</span>
               <button class="btn btn--accent">Add to Cart</button>
             </div>
           </div>
         </div>
 
-        <div class="menu-item">
+        <div class="menu-item" data-category="seafood">
           <div class="menu-item__image"></div>
           <div class="menu-item__content">
             <h3 class="menu-item__title">Grilled Salmon</h3>
             <p class="menu-item__desc">Fresh Atlantic salmon fillet with lemon butter sauce, served with seasonal vegetables and rice.</p>
             <div class="menu-item__footer">
-              <span class="menu-item__price">$24.99</span>
+              <span class="menu-item__price">LKR 24.99</span>
               <button class="btn btn--accent">Add to Cart</button>
             </div>
           </div>
         </div>
 
-        <div class="menu-item">
+        <div class="menu-item" data-category="mexican">
           <div class="menu-item__image"></div>
           <div class="menu-item__content">
             <h3 class="menu-item__title">Tacos al Pastor</h3>
             <p class="menu-item__desc">Three corn tortillas with marinated pork, pineapple, onion, and cilantro. Served with lime wedges.</p>
             <div class="menu-item__footer">
-              <span class="menu-item__price">$12.99</span>
+              <span class="menu-item__price">LKR 12.99</span>
               <button class="btn btn--accent">Add to Cart</button>
             </div>
           </div>
         </div>
 
-        <div class="menu-item">
+        <div class="menu-item" data-category="bowls">
           <div class="menu-item__image"></div>
           <div class="menu-item__content">
             <h3 class="menu-item__title">Vegetarian Buddha Bowl</h3>
             <p class="menu-item__desc">Quinoa, roasted vegetables, chickpeas, avocado, and tahini dressing. Healthy and delicious.</p>
             <div class="menu-item__footer">
-              <span class="menu-item__price">$11.99</span>
+              <span class="menu-item__price">LKR 11.99</span>
               <button class="btn btn--accent">Add to Cart</button>
             </div>
           </div>

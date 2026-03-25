@@ -1,0 +1,13 @@
+How to log in now:
+
+Open admin page from browser using one of these:
+http://localhost:3001/admin-login.html
+http://localhost:5500/admin-login.html (if using Live Server)
+Use:
+Username: admin
+Password: Admin@123
+Important:
+
+Do not open the file directly as file:///... for admin login flow. Use a localhost URL.
+
+Username admin /password Admin@123

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="UrbanEats admin dashboard for managing menu items." />
+  <title>Admin Dashboard - UrbanEats</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="admin-dashboard" data-admin-dashboard>
+    <section class="admin-dashboard__header">
+      <div>
+        <p class="admin-dashboard__tag">Admin Dashboard</p>
+        <h1>Manage Menu Items</h1>
+        <p class="admin-dashboard__user">Signed in as <strong data-admin-username>...</strong></p>
+      </div>
+      <div class="admin-dashboard__actions">
+        <a href="menu.html" class="btn btn--outline">View Menu</a>
+        <button class="btn btn--accent" type="button" data-admin-logout>Log out</button>
+      </div>
+    </section>
+
+    <section class="admin-dashboard__panel">
+      <h2>Add Food Item</h2>
+      <form class="admin-form" data-admin-menu-form>
+        <label>
+          Food Name
+          <input type="text" name="name" required />
+        </label>
+
+        <label>
+          Description
+          <textarea name="description" rows="3" required></textarea>
+        </label>
+
+        <label>
+          Image (URL or file name from food-images folder)
+          <input type="text" name="imageUrl" placeholder="burger.jpg or https://example.com/food.jpg" />
+        </label>
+
+        <fieldset class="admin-form__category-group">
+          <legend>Category</legend>
+          <label class="admin-form__radio-option">
+            <input type="radio" name="category" value="burgers" checked />
+            Burgers
+          </label>
+          <label class="admin-form__radio-option">
+            <input type="radio" name="category" value="pizza" />
+            Pizza
+          </label>
+          <label class="admin-form__radio-option">
+            <input type="radio" name="category" value="asian" />
+            Asian
+          </label>
+          <label class="admin-form__radio-option">
+            <input type="radio" name="category" value="seafood" />
+            Seafood
+          </label>
+          <label class="admin-form__radio-option">
+            <input type="radio" name="category" value="mexican" />
+            Mexican
+          </label>
+          <label class="admin-form__radio-option">
+            <input type="radio" name="category" value="bowls" />
+            Bowls
+          </label>
+          <label class="admin-form__radio-option">
+            <input type="radio" name="category" value="other" />
+            Other
+          </label>
+        </fieldset>
+
+        <label>
+          Price (LKR)
+          <input type="number" name="priceLkr" min="0.01" step="0.01" required />
+        </label>
+
+        <button class="btn btn--accent" type="submit">Add Item</button>
+      </form>
+      <p class="admin-dashboard__feedback" data-admin-dashboard-feedback></p>
+    </section>
+
+    <section class="admin-dashboard__panel">
+      <h2>Current Menu Items</h2>
+      <div class="admin-menu-list" data-admin-menu-list></div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
