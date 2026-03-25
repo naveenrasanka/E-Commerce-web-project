@@ -15,6 +15,7 @@ function toggleMenu() {
 }
 
 const CART_STORAGE_KEY = 'urbaneats-cart';
+const MENU_CACHE_KEY = 'urbaneats-menu-cache';
 const DELIVERY_FEE = 2.99;
 const TAX_RATE = 0.08;
 const MENU_API_ENDPOINT = '/api/menu';
@@ -38,6 +39,29 @@ function getCartItems() {
 
 function saveCartItems(items) {
   localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+}
+
+function getCachedMenuItems() {
+  try {
+    const raw = localStorage.getItem(MENU_CACHE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveCachedMenuItems(items) {
+  try {
+    localStorage.setItem(MENU_CACHE_KEY, JSON.stringify(items));
+  } catch (error) {
+    // Ignore quota/storage issues and continue with live rendering.
+  }
+}
+
+function showMenuSyncNotice(message) {
+  return;
 }
 
 function formatCurrency(amount) {
@@ -131,10 +155,21 @@ async function initializeDynamicMenu() {
     if (!Array.isArray(data.items)) return;
 
     renderMenuItems(data.items);
+    saveCachedMenuItems(data.items);
+    showMenuSyncNotice('Live menu loaded from server.');
     initializeMenuButtons();
     initializeMenuCategoryFilter();
   } catch (error) {
-    // Keep existing static menu content if API is unavailable.
+    const cachedItems = getCachedMenuItems();
+    if (cachedItems.length) {
+      renderMenuItems(cachedItems);
+      initializeMenuButtons();
+      initializeMenuCategoryFilter();
+      showMenuSyncNotice('Server is offline. Showing last saved menu data. Start backend to refresh.');
+      return;
+    }
+
+    showMenuSyncNotice('Server is offline and no saved menu data is available. Start backend and refresh.');
   }
 }
 

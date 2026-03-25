@@ -153,6 +153,48 @@ img {
   gap: 0.75rem;
 }
 
+.admin-auth__api-status {
+  margin-top: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.admin-auth__api-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.admin-auth__api-status.is-online {
+  color: #166534;
+  border-color: rgba(22, 163, 74, 0.35);
+  background: rgba(22, 163, 74, 0.12);
+}
+
+.admin-auth__api-status.is-online .admin-auth__api-dot {
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+}
+
+.admin-auth__api-status.is-offline {
+  color: #9f1239;
+  border-color: rgba(244, 63, 94, 0.35);
+  background: rgba(244, 63, 94, 0.12);
+}
+
+.admin-auth__api-status.is-offline .admin-auth__api-dot {
+  background: #f43f5e;
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.14);
+}
+
 .navbar__auth-block {
   display: flex;
   flex-direction: column;
@@ -836,6 +878,17 @@ img {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.5rem;
+
+.menu-sync-notice {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(194, 65, 12, 0.25);
+  background: rgba(194, 65, 12, 0.08);
+  color: #9a3412;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
   display: flex;
   gap: 1.5rem;
   transition: border-color 0.2s, box-shadow 0.2s;

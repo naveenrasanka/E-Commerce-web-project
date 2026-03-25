@@ -82,6 +82,40 @@ async function adminFetchJson(url, options) {
   return body;
 }
 
+async function adminCheckBackendHealth() {
+  try {
+    const response = await fetch(adminBuildApiUrl('/api/admin/status'), {
+      method: 'GET',
+      credentials: 'include',
+      cache: 'no-store'
+    });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
+function initializeAdminApiStatus() {
+  const status = document.querySelector('[data-admin-api-status]');
+  const text = document.querySelector('[data-admin-api-status-text]');
+  if (!status || !text) return;
+
+  function setState(isOnline) {
+    status.classList.toggle('is-online', isOnline);
+    status.classList.toggle('is-offline', !isOnline);
+    text.textContent = isOnline ? 'API Online' : 'API Offline';
+    status.title = isOnline ? 'Backend is running' : 'Backend is not reachable';
+  }
+
+  async function refresh() {
+    const isOnline = await adminCheckBackendHealth();
+    setState(isOnline);
+  }
+
+  refresh();
+  setInterval(refresh, 15000);
+}
+
 async function initializeAdminAuthPage() {
   const authRoot = document.querySelector('[data-admin-auth]');
   if (!authRoot) return;
@@ -246,6 +280,7 @@ async function initializeAdminDashboardPage() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  initializeAdminApiStatus();
   initializeAdminAuthPage();
   initializeAdminDashboardPage();
 });
