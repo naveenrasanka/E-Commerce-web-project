@@ -84,9 +84,8 @@ async function adminFetchJson(url, options) {
 
 async function adminCheckBackendHealth() {
   try {
-    const response = await fetch(adminBuildApiUrl('/api/admin/status'), {
+    const response = await fetch(adminBuildApiUrl('/api/health'), {
       method: 'GET',
-      credentials: 'include',
       cache: 'no-store'
     });
     return response.ok;
