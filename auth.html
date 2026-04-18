@@ -115,7 +115,7 @@
         <form class="auth-form" data-auth-form="login">
           <label class="auth-form__field">
             <span>Username</span>
-            <input type="text" name="email" placeholder="Enter your username" required autocomplete="username" />
+            <input type="text" name="username" placeholder="Enter your username" required autocomplete="username" />
           </label>
           <label class="auth-form__field">
             <span>Password</span>
@@ -125,6 +125,10 @@
         </form>
 
         <form class="auth-form" data-auth-form="signup" hidden>
+          <label class="auth-form__field">
+            <span>Username</span>
+            <input type="text" name="username" placeholder="jane_doe" required autocomplete="username" />
+          </label>
           <label class="auth-form__field">
             <span>Full name</span>
             <input type="text" name="fullName" placeholder="Jane Doe" required />

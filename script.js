@@ -409,7 +409,7 @@ function initializeAuthPage() {
     loginForm.addEventListener('submit', async function(event) {
       event.preventDefault();
 
-      const usernameInput = loginForm.querySelector('[name="email"]');
+      const usernameInput = loginForm.querySelector('[name="username"]');
       const passwordInput = loginForm.querySelector('[name="password"]');
 
       const payload = {
@@ -423,13 +423,13 @@ function initializeAuthPage() {
       }
 
       try {
-        await authFetchJson('/api/admin/login', {
+        await authFetchJson('/api/users/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
 
-        window.location.href = 'admin-dashboard.html';
+        window.location.href = 'index.html';
       } catch (error) {
         if (feedback) {
           feedback.textContent = error.message;
@@ -439,9 +439,12 @@ function initializeAuthPage() {
   }
 
   if (signupForm) {
-    signupForm.addEventListener('submit', function(event) {
+    signupForm.addEventListener('submit', async function(event) {
       event.preventDefault();
 
+      const usernameInput = signupForm.querySelector('[name="username"]');
+      const fullNameInput = signupForm.querySelector('[name="fullName"]');
+      const emailInput = signupForm.querySelector('[name="email"]');
       const passwordInput = signupForm.querySelector('[name="password"]');
       const confirmInput = signupForm.querySelector('[name="confirmPassword"]');
 
@@ -454,11 +457,42 @@ function initializeAuthPage() {
         return;
       }
 
-      if (feedback) {
-        feedback.textContent = 'Demo mode: Account created successfully.';
+      const payload = {
+        username: String(usernameInput ? usernameInput.value : '').trim(),
+        fullName: String(fullNameInput ? fullNameInput.value : '').trim(),
+        email: String(emailInput ? emailInput.value : '').trim(),
+        password: String(passwordInput.value || '')
+      };
+
+      if (!payload.username || !payload.fullName || !payload.email || payload.password.length < 6) {
+        if (feedback) {
+          feedback.textContent = 'Please fill all fields. Password must be at least 6 characters.';
+        }
+        return;
       }
-      signupForm.reset();
-      setAuthMode('login');
+
+      try {
+        await authFetchJson('/api/users/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (feedback) {
+          feedback.textContent = 'Account created successfully. Please log in with your username.';
+        }
+        signupForm.reset();
+        setAuthMode('login');
+
+        const loginUsername = loginForm ? loginForm.querySelector('[name="username"]') : null;
+        if (loginUsername) {
+          loginUsername.value = payload.username;
+        }
+      } catch (error) {
+        if (feedback) {
+          feedback.textContent = error.message;
+        }
+      }
     });
   }
 

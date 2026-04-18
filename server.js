@@ -23,6 +23,7 @@ const DB_CONFIG = {
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
+  port: Number(process.env.DB_PORT) || 3306,
   database: 'urbaneats',
   waitForConnections: true,
   connectionLimit: 10,
@@ -38,7 +39,8 @@ async function initializeDatabase() {
     const rootConnection = await mysql.createConnection({
       host: DB_CONFIG.host,
       user: DB_CONFIG.user,
-      password: DB_CONFIG.password
+      password: DB_CONFIG.password,
+      port: DB_CONFIG.port
     });
 
     await rootConnection.query('CREATE DATABASE IF NOT EXISTS urbaneats');
@@ -53,6 +55,17 @@ async function initializeDatabase() {
       CREATE TABLE IF NOT EXISTS admins (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
         password_hash VARCHAR(255) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -244,6 +257,83 @@ app.post('/api/admin/logout', function(req, res) {
   req.session.destroy(function() {
     res.json({ message: 'Logged out.' });
   });
+});
+
+app.post('/api/users/register', async function(req, res) {
+  const username = String(req.body.username || '').trim();
+  const fullName = String(req.body.fullName || '').trim();
+  const email = String(req.body.email || '').trim().toLowerCase();
+  const password = String(req.body.password || '');
+
+  if (!username || !fullName || !email || password.length < 6) {
+    return res.status(400).json({
+      message: 'Username, full name, email, and password (min 6 chars) are required.'
+    });
+  }
+
+  try {
+    const connection = await db.getConnection();
+    const passwordHash = bcrypt.hashSync(password, 10);
+
+    const [result] = await connection.query(
+      'INSERT INTO users (username, full_name, email, password_hash) VALUES (?, ?, ?, ?)',
+      [username, fullName, email, passwordHash]
+    );
+
+    connection.release();
+
+    req.session.userId = result.insertId;
+    req.session.userUsername = username;
+
+    return res.status(201).json({
+      message: 'User account created successfully.',
+      username: username
+    });
+  } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ message: 'Username or email already exists.' });
+    }
+
+    return res.status(500).json({ message: 'Could not create user account.' });
+  }
+});
+
+app.post('/api/users/login', async function(req, res) {
+  const username = String(req.body.username || '').trim();
+  const password = String(req.body.password || '');
+
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required.' });
+  }
+
+  try {
+    const connection = await db.getConnection();
+    const [users] = await connection.query(
+      'SELECT id, username, password_hash FROM users WHERE username = ?',
+      [username]
+    );
+    connection.release();
+
+    if (!users.length || !bcrypt.compareSync(password, users[0].password_hash)) {
+      return res.status(401).json({ message: 'Invalid username or password.' });
+    }
+
+    req.session.userId = users[0].id;
+    req.session.userUsername = users[0].username;
+
+    return res.json({
+      message: 'User login successful.',
+      username: users[0].username
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Database error' });
+  }
+});
+
+app.post('/api/users/logout', function(req, res) {
+  req.session.userId = null;
+  req.session.userUsername = null;
+  res.json({ message: 'User logged out.' });
 });
 
 app.get('/api/admin/me', requireAdmin, function(req, res) {

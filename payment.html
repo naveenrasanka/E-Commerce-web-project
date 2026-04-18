@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Secure payment page for UrbanEats checkout." />
+  <title>Payment - UrbanEats</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .payment-page {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .payment-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .payment-header h1 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin-bottom: 0.35rem;
+    }
+
+    .payment-header p {
+      color: var(--muted);
+    }
+
+    .payment-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1rem;
+    }
+
+    .payment-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+
+    .payment-card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .payment-form {
+      display: grid;
+      gap: 0.9rem;
+    }
+
+    .payment-form label {
+      display: grid;
+      gap: 0.35rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .payment-form input,
+    .payment-form select {
+      height: 2.6rem;
+      border: 1px solid var(--border);
+      border-radius: 0.55rem;
+      padding: 0 0.8rem;
+      font: inherit;
+      background: #fff;
+      color: var(--foreground);
+    }
+
+    .payment-form__split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+
+    .payment-summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.65rem;
+      color: var(--muted);
+    }
+
+    .payment-summary-row strong {
+      color: var(--foreground);
+    }
+
+    .payment-total {
+      border-top: 1px solid var(--border);
+      padding-top: 0.65rem;
+      margin-top: 0.65rem;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .payment-actions {
+      margin-top: 1rem;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .payment-back {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 860px) {
+      .payment-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <nav class="navbar__inner" aria-label="Main navigation">
+      <a href="index.html" class="navbar__brand" aria-label="UrbanEats home">
+        <span class="navbar__brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M16 2v17.714A2.286 2.286 0 0113.714 22h0A2.286 2.286 0 0111.43 19.714V2" />
+            <path d="M11.43 2v5.143a2.857 2.857 0 005.714 0V2" />
+            <path d="M3 2v7a4 4 0 004 4h0" />
+            <path d="M7 2v7a4 4 0 004 4h0" />
+            <path d="M7 13v6.714A2.286 2.286 0 004.714 22h0A2.286 2.286 0 012.43 19.714V13" />
+          </svg>
+        </span>
+        <span class="navbar__brand-name">UrbanEats</span>
+      </a>
+      <ul class="navbar__links" role="menubar">
+        <li role="none"><a href="index.html" role="menuitem">Home</a></li>
+        <li role="none"><a href="menu.html" role="menuitem">Menu</a></li>
+        <li role="none"><a href="cart.html" role="menuitem">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="payment-page">
+    <div class="payment-header">
+      <h1>Payment</h1>
+      <p>Complete your order using card payment.</p>
+    </div>
+
+    <div class="payment-grid">
+      <section class="payment-card" aria-label="Payment details">
+        <h2>Card Details</h2>
+        <form class="payment-form" data-payment-form>
+          <label>
+            Cardholder Name
+            <input type="text" name="name" placeholder="John Perera" required />
+          </label>
+
+          <label>
+            Card Number
+            <input type="text" name="card" placeholder="1234 5678 9012 3456" maxlength="19" required />
+          </label>
+
+          <div class="payment-form__split">
+            <label>
+              Expiry
+              <input type="text" name="expiry" placeholder="MM/YY" maxlength="5" required />
+            </label>
+            <label>
+              CVV
+              <input type="password" name="cvv" placeholder="123" maxlength="4" required />
+            </label>
+          </div>
+
+          <label>
+            District
+            <select name="district" required>
+              <option value="">Select district</option>
+              <option>Colombo</option>
+              <option>Gampaha</option>
+              <option>Kalutara</option>
+              <option>Kandy</option>
+              <option>Galle</option>
+            </select>
+          </label>
+
+          <div class="payment-actions">
+            <button class="btn btn--accent btn--lg" type="submit">Pay Now</button>
+            <a class="btn btn--outline btn--lg" href="cart.html">Back to Cart</a>
+          </div>
+          <p class="payment-back">This is a demo payment page for the checkout flow.</p>
+        </form>
+      </section>
+
+      <aside class="payment-card" aria-label="Order summary">
+        <h2>Order Summary</h2>
+        <div class="payment-summary-row"><span>Subtotal</span><strong data-subtotal>LKR 0.00</strong></div>
+        <div class="payment-summary-row"><span>Delivery</span><strong data-delivery>LKR 0.00</strong></div>
+        <div class="payment-summary-row"><span>Tax</span><strong data-tax>LKR 0.00</strong></div>
+        <div class="payment-total"><span>Total</span><span data-total>LKR 0.00</span></div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cartItems = (function() {
+        try {
+          const raw = localStorage.getItem('urbaneats-cart');
+          const parsed = JSON.parse(raw || '[]');
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      })();
+
+      const subtotal = cartItems.reduce(function(sum, item) {
+        return sum + (Number(item.price || 0) * Number(item.quantity || 0));
+      }, 0);
+      const delivery = cartItems.length ? 2.99 : 0;
+      const tax = subtotal * 0.08;
+      const total = subtotal + delivery + tax;
+
+      const formatter = new Intl.NumberFormat('en-LK', {
+        style: 'currency',
+        currency: 'LKR',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
+      function setText(selector, value) {
+        const el = document.querySelector(selector);
+        if (el) el.textContent = formatter.format(value);
+      }
+
+      setText('[data-subtotal]', subtotal);
+      setText('[data-delivery]', delivery);
+      setText('[data-tax]', tax);
+      setText('[data-total]', total);
+
+      const form = document.querySelector('[data-payment-form]');
+      if (form) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+          alert('Payment successful. Thank you for your order!');
+          localStorage.removeItem('urbaneats-cart');
+          window.location.href = 'index.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
