@@ -30,6 +30,7 @@ const DB_CONFIG = {
 };
 
 let db;
+let dbReady = false;
 
 async function initializeDatabase() {
   try {
@@ -102,6 +103,7 @@ async function initializeDatabase() {
     }
 
     connection.release();
+    dbReady = true;
   } catch (error) {
     console.error('Database initialization error:', error.message);
     throw error;
@@ -123,6 +125,13 @@ app.use(function(req, res, next) {
   }
 
   next();
+});
+
+app.get('/api/health', function(req, res) {
+  res.json({
+    ok: true,
+    databaseReady: dbReady
+  });
 });
 
 app.use(express.json());
@@ -314,19 +323,18 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-initializeDatabase().then(() => {
-  app.listen(PORT, function() {
-    console.log('UrbanEats backend running at http://localhost:' + PORT);
+app.listen(PORT, function() {
+  console.log('UrbanEats backend running at http://localhost:' + PORT);
+  initializeDatabase().then(function() {
     console.log('MySQL database: urbaneats on ' + DB_CONFIG.host);
+  }).catch(function(error) {
+    console.error('Failed to initialize database:', error.message);
+    console.error('');
+    console.error('MySQL Connection Configuration:');
+    console.error('- Host: ' + DB_CONFIG.host + ' (set with DB_HOST env var)');
+    console.error('- User: ' + DB_CONFIG.user + ' (set with DB_USER env var)');
+    console.error('- Password: ' + (DB_CONFIG.password ? '****' : '(none)') + ' (set with DB_PASSWORD env var)');
+    console.error('');
+    console.error('Make sure MySQL is running and accessible.');
   });
-}).catch((error) => {
-  console.error('Failed to initialize database:', error.message);
-  console.error('');
-  console.error('MySQL Connection Configuration:');
-  console.error('- Host: ' + DB_CONFIG.host + ' (set with DB_HOST env var)');
-  console.error('- User: ' + DB_CONFIG.user + ' (set with DB_USER env var)');
-  console.error('- Password: ' + (DB_CONFIG.password ? '****' : '(none)') + ' (set with DB_PASSWORD env var)');
-  console.error('');
-  console.error('Make sure MySQL is running and accessible.');
-  process.exit(1);
 });
